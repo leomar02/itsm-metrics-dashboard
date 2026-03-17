@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ITSM Metrics Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div class="logo">
+      <div class="logo-dot"></div>
+      IT Operations Center
+    </div>
+    <div class="header-right">
+      <span class="week-badge" id="weekBadge">Week of —</span>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="sidebar">
+      <div class="sidebar-label">Views</div>
+      <div class="nav-item active"><span class="nav-dot dot-green"></span>Weekly Summary</div>
+      <div class="nav-item"><span class="nav-dot dot-amber"></span>SLA Compliance</div>
+      <div class="nav-item"><span class="nav-dot dot-blue"></span>Ticket Volume</div>
+      <div class="nav-item"><span class="nav-dot dot-red"></span>Open Incidents</div>
+      <div class="sidebar-label">Actions</div>
+      <div class="nav-item" onclick="document.getElementById('dataSection').scrollIntoView({behavior:'smooth'})"><span style="font-size:14px">↑</span> Load Data</div>
+      <div class="nav-item" onclick="generateReport()"><span style="font-size:14px">◎</span> Run AI Report</div>
+    </div>
+
+    <div class="content">
+
+      <!-- Metric Cards -->
+      <div class="metrics-row">
+        <div class="metric-card mc-green">
+          <div class="metric-label">Total Tickets</div>
+          <div class="metric-value mv-green" id="m-total">—</div>
+          <div class="metric-sub">this week</div>
+        </div>
+        <div class="metric-card mc-amber">
+          <div class="metric-label">Avg Resolution</div>
+          <div class="metric-value mv-amber" id="m-res">—</div>
+          <div class="metric-sub">hours</div>
+        </div>
+        <div class="metric-card mc-blue">
+          <div class="metric-label">SLA Compliance</div>
+          <div class="metric-value mv-blue" id="m-sla">—</div>
+          <div class="metric-sub">% on-time</div>
+        </div>
+        <div class="metric-card mc-red">
+          <div class="metric-label">Open P1/P2</div>
+          <div class="metric-value mv-red" id="m-p1">—</div>
+          <div class="metric-sub">critical incidents</div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-title">Tickets by category</div>
+          <div id="catBars"><div class="empty-state">Load data to see breakdown</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">SLA compliance by team</div>
+          <div id="slaRows"><div class="empty-state">Load data to see SLA status</div></div>
+        </div>
+      </div>
+
+      <!-- Open Incidents -->
+      <div class="panel" style="margin-bottom:20px;">
+        <div class="panel-title">Recent open incidents</div>
+        <div class="ticket-list" id="ticketList">
+          <div class="empty-state">Load data to see open tickets</div>
+        </div>
+      </div>
+
+      <!-- AI Summary Panel -->
+      <div class="ai-panel" id="aiPanel">
+        <div class="ai-header">
+          <span class="ai-badge">AI Summary</span>
+          <span class="ai-title">Executive Report</span>
+          <button class="copy-btn" id="copyBtn" onclick="copyReport()" style="margin-left:auto;">Copy</button>
+        </div>
+        <div class="ai-output" id="aiOutput">
+          <span class="ai-placeholder">Load your ticket data below, then click "Generate AI Report" to produce a plain-language executive summary powered by Claude.</span>
+        </div>
+        <div class="ai-controls">
+          <button class="btn btn-primary" id="genBtn" onclick="generateReport()">Generate AI Report</button>
+          <button class="btn btn-ghost" onclick="loadSample()">Load sample data</button>
+        </div>
+      </div>
+
+      <!-- Data Input -->
+      <div class="panel" id="dataSection">
+        <div class="panel-title">
+          Data input
+          <div class="tabs">
+            <div class="tab active" onclick="switchTab('paste',this)">Paste CSV</div>
+            <div class="tab" onclick="switchTab('manual',this)">Manual entry</div>
+          </div>
+        </div>
+
+        <div id="pasteTab">
+          <div class="input-hint">Paste CSV from Jira, Freshservice, or ServiceNow. Required columns: ID, Title, Category, Priority, Status, Created, Resolved, Team</div>
+          <textarea class="data-input" id="csvInput" placeholder="ID,Title,Category,Priority,Status,Created,Resolved,Team&#10;TKT-001,VPN not connecting,Network,P2,Resolved,2025-01-06,2025-01-06,Infra&#10;..."></textarea>
+          <button class="btn btn-primary" style="margin-top:10px;" onclick="parseAndLoad()">Load Data</button>
+        </div>
+
+        <div id="manualTab" style="display:none;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <div class="field-label">TOTAL TICKETS</div>
+              <input type="number" id="f-total" class="field-input" placeholder="e.g. 147">
+            </div>
+            <div>
+              <div class="field-label">AVG RESOLUTION (hrs)</div>
+              <input type="number" id="f-res" class="field-input" placeholder="e.g. 4.2">
+            </div>
+            <div>
+              <div class="field-label">SLA COMPLIANCE %</div>
+              <input type="number" id="f-sla" class="field-input" placeholder="e.g. 91">
+            </div>
+            <div>
+              <div class="field-label">OPEN P1/P2 COUNT</div>
+              <input type="number" id="f-p1" class="field-input" placeholder="e.g. 3">
+            </div>
+          </div>
+          <textarea class="data-input" id="f-notes" placeholder="Additional context (optional): top categories, known issues, team notes..." style="margin-top:12px;min-height:80px;"></textarea>
+          <button class="btn btn-primary" style="margin-top:10px;" onclick="loadManual()">Load Data</button>
+        </div>
+      </div>
+
+    </div><!-- end .content -->
+  </div><!-- end .main -->
+</div><!-- end .shell -->
+
+<script src="app.js"></script>
+</body>
+</html>

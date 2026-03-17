@@ -1,0 +1,19 @@
+# Environment variables — NEVER commit your API key
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+npm-debug.log*
+
+# macOS
+.DS_Store
+
+# Editor directories
+.vscode/
+.idea/
+
+# Build output
+dist/
+build/

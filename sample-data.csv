@@ -1,0 +1,16 @@
+ID,Title,Category,Priority,Status,Created,Resolved,Team
+TKT-101,VPN connectivity failure affecting remote users,Network,P1,Resolved,2025-01-06,2025-01-06,Infrastructure
+TKT-102,Laptop won't boot after Windows update,Hardware,P2,Open,2025-01-06,,Endpoint
+TKT-103,Okta MFA not sending push notifications,IAM/SSO,P2,Resolved,2025-01-07,2025-01-07,Identity
+TKT-104,Slack channels missing after workspace migration,SaaS/Apps,P3,Resolved,2025-01-07,2025-01-08,Collaboration
+TKT-105,New hire provisioning - Sarah Chen,Onboarding,P3,Resolved,2025-01-07,2025-01-07,IT Ops
+TKT-106,Google Drive sync error on MacOS,SaaS/Apps,P3,Resolved,2025-01-08,2025-01-09,Collaboration
+TKT-107,Printer offline in office 3F,Hardware,P3,Resolved,2025-01-08,2025-01-08,Endpoint
+TKT-108,SOC 2 audit evidence - export request,Compliance,P2,Open,2025-01-08,,IT Ops
+TKT-109,Zoom Rooms camera not working - conf room B,Hardware,P2,Resolved,2025-01-09,2025-01-09,Endpoint
+TKT-110,Password reset - finance team x3,IAM/SSO,P4,Resolved,2025-01-09,2025-01-09,Identity
+TKT-111,Kandji policy deployment failing on M3 Macs,MDM/Endpoint,P2,Open,2025-01-09,,Endpoint
+TKT-112,New hire provisioning - James Okafor,Onboarding,P3,Resolved,2025-01-09,2025-01-10,IT Ops
+TKT-113,VPN throughput degraded for London office,Network,P2,Resolved,2025-01-10,2025-01-10,Infrastructure
+TKT-114,GitHub SSO misconfigured after org rename,IAM/SSO,P1,Resolved,2025-01-10,2025-01-10,Identity
+TKT-115,Offboarding - revoke access for M. Torres,Offboarding,P2,Resolved,2025-01-10,2025-01-10,IT Ops
