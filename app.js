@@ -347,7 +347,7 @@ Be direct, specific, and use exact numbers. Write for a non-technical executive 
 Use plain-text section labels (no markdown headers or asterisks). Keep it under 300 words.`;
 
   try {
-    const response = await fetch('https://eo1234abcd.m.pipedream.net', {
+    const response = await fetch('https://eoxsztwekgtfx9r.m.pipedream.net', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
