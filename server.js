@@ -30,7 +30,9 @@ require('http').createServer((req, res) => {
         let data = '';
         apiRes.on('data', chunk => data += chunk);
         apiRes.on('end', () => {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
+          // Pass the upstream status through so the client can tell an API
+          // error from a successful response.
+          res.writeHead(apiRes.statusCode, { 'Content-Type': 'application/json' });
           res.end(data);
         });
       });
@@ -43,5 +45,15 @@ require('http').createServer((req, res) => {
       apiReq.write(body);
       apiReq.end();
     });
+    return;
   }
+
+  if (req.method === 'GET') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ status: 'ok', usage: 'POST a Messages API request body here' }));
+    return;
+  }
+
+  res.writeHead(405, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ error: 'Method not allowed' }));
 }).listen(process.env.PORT || 3000);
